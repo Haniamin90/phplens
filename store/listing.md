@@ -48,6 +48,12 @@ anywhere. Full policy: PRIVACY.md in the repository.
 
 Open source under the MIT licence.
 
+## URLs
+
+- Privacy policy: https://haniamin90.github.io/phplens/PRIVACY
+- Homepage: https://haniamin90.github.io/phplens/
+- Support: https://github.com/Haniamin90/phplens/issues
+
 ## Category
 
 - Chrome Web Store: Privacy & Security (fallback: Productivity › Developer Tools)

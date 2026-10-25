@@ -38,16 +38,15 @@ The listing copy, permission justifications and asset sizes are in
    and harmless; errors are not.
 6. Tag the release in git (`git tag v1.1.0`) so the published package can be reproduced.
 
-Hosting the privacy policy: Chrome, Edge and Opera want a **URL**. The rendered file on
-GitHub works as-is:
+Hosting the privacy policy: Chrome, Edge and Opera want a **URL**. GitHub Pages is enabled
+for this repository (branch `main`, folder `/ (root)`, Jekyll via `_config.yml`), so use:
 
 ```
-https://github.com/Haniamin90/phplens/blob/main/PRIVACY.md
+https://haniamin90.github.io/phplens/PRIVACY
 ```
 
-For a cleaner page, enable GitHub Pages (Settings → Pages → *Deploy from a branch* →
-`main`, folder `/ (root)`); the policy is then at
-`https://haniamin90.github.io/phplens/PRIVACY`.
+The rendered file on GitHub, `https://github.com/Haniamin90/phplens/blob/main/PRIVACY.md`,
+works as a fallback. The project page itself is `https://haniamin90.github.io/phplens/`.
 
 Pushing a tag `vX.Y.Z` runs `.github/workflows/release.yml`, which re-runs tests and build
 and attaches both zips to a GitHub release with the matching `CHANGELOG.md` section. Use

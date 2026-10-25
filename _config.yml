@@ -1,0 +1,23 @@
+# GitHub Pages (Jekyll) configuration. The site is the repository's Markdown files:
+# README.md -> /, PRIVACY.md -> /PRIVACY, docs/PUBLISHING.md -> /docs/PUBLISHING.
+title: PHPLens
+description: Browser extension that warns you when a website runs an unpatched or end-of-life PHP version. Passive, reads server headers only.
+theme: jekyll-theme-cayman
+show_downloads: false
+plugins:
+  - jekyll-relative-links
+relative_links:
+  enabled: true
+  collections: false
+exclude:
+  - src/
+  - tools/
+  - tests/
+  - store/
+  - dist/
+  - node_modules/
+  - package.json
+  - manifest.json
+  - manifest.firefox.json
+  - .editorconfig
+  - .gitattributes
