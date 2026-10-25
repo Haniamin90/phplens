@@ -18,6 +18,8 @@ const SETS = {
   'state-unknown': { top: [100, 116, 139], bottom: [71, 85, 105],   mark: 'question' }
 };
 const SIZES = [16, 32, 48, 128];
+// Store listing icons: full-bleed artwork (no margin) at the sizes the stores ask for.
+const STORE_SIZES = [128, 256, 512];
 
 // ---- geometry helpers (unit square, y down) --------------------------------
 function insideShield(u, v, shrink = 0) {
@@ -74,10 +76,10 @@ function insideMark(kind, u, v) {
 // ---- raster -----------------------------------------------------------------
 // Store icons (128 px) get the 16 px transparent margin the Chrome Web Store asks for:
 // the artwork is scaled to 96 px and centred.
-function render(size, set) {
+function render(size, set, fullBleed = false) {
   const px = new Uint8Array(size * size * 4);
   const SS = 4;
-  const scale = size >= 128 ? 0.75 : 1;
+  const scale = size >= 128 && !fullBleed ? 0.75 : 1;
   for (let y = 0; y < size; y++) {
     for (let x = 0; x < size; x++) {
       let fill = 0, edge = 0, mark = 0;
@@ -140,4 +142,10 @@ for (const [name, set] of Object.entries(SETS)) {
     count++;
   }
 }
-console.log(`icons: wrote ${count} PNG files to ${OUT}`);
+const STORE = join(ROOT, 'store');
+mkdirSync(STORE, { recursive: true });
+for (const size of STORE_SIZES) {
+  writeFileSync(join(STORE, `listing-icon-${size}.png`), png(size, render(size, SETS.icon, true)));
+  count++;
+}
+console.log(`icons: wrote ${count} PNG files to ${OUT} and ${STORE}`);
