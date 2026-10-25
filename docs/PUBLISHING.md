@@ -161,7 +161,10 @@ homepage, support URL, licence, release notes and notes for the reviewer):
    the *Privacy policy* field (paste `PRIVACY.md`); the submission API does not take either.
 
 The first run of `web-ext sign` creates the add-on (the id comes from the manifest); later
-runs with a higher version submit updates to it. Keep `store/amo-metadata.json` in sync with
+runs with a higher version submit updates to it. The metadata file mirrors the body of
+AMO's *add-on create* API call: listing fields (`categories`, `summary`, `description`,
+`slug`, `tags`, …) sit at the top level next to a `version` object. A "field is required"
+error from the server means a field is missing or nested in the wrong place. Keep `store/amo-metadata.json` in sync with
 `CHANGELOG.md` for the release notes.
 
 ---
