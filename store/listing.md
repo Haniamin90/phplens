@@ -118,8 +118,4 @@ PHP version, based on headers the browser already received.
 | Small promo tile | 440×280 PNG | Chrome (optional) |
 | Marquee | 1400×560 PNG | Chrome (optional, featured placement) |
 
-Suggested screenshots (take them with the demo server, `npm run demo`, at 1280×800):
-1. The popup on an unpatched site (red).
-2. The centered dialog with Details open.
-3. The popup on a patched site (green).
-4. The settings page with the release table.
+Screenshots are generated, not hand-taken: `npm run screenshots` renders the real popup, dialog and settings page with headless Edge/Chrome into `store/screenshots/` (1280×800 PNG): 1 unpatched popup, 2 warning dialog, 3 patched popup, 4 settings. Re-run after UI changes.
