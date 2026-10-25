@@ -53,7 +53,7 @@ Open source under the MIT licence.
 | Store | Status | Listing |
 |---|---|---|
 | Firefox Add-ons (AMO) | 1.1.0 submitted 2026-10-25 via `npm run sign:firefox`, in review | https://addons.mozilla.org/firefox/addon/phplens/ · manage: https://addons.mozilla.org/developers/addon/phplens/edit |
-| Chrome Web Store | not yet submitted | – |
+| Chrome Web Store | in progress – see store/chrome-web-store.md | – |
 | Microsoft Edge Add-ons | not yet submitted | – |
 | Opera Add-ons | not yet submitted | – |
 | Safari App Store | not yet submitted | – |
