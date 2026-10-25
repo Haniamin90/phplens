@@ -1,0 +1,36 @@
+name: Bug report
+description: Something in the extension itself misbehaves (UI, notifications, settings, crash).
+labels: [bug]
+body:
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      placeholder: |
+        1. npm run demo
+        2. open http://127.0.0.1:8099/vulnerable
+        3. click …
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behaviour
+  - type: input
+    id: env
+    attributes:
+      label: Browser, OS and PHPLens version
+      placeholder: Firefox 131 / Windows 11 / PHPLens 1.1.0
+    validations:
+      required: true
+  - type: textarea
+    id: logs
+    attributes:
+      label: Console output (chrome://extensions → service worker → Console, or the page console)
+      render: text

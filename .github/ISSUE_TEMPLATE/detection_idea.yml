@@ -1,0 +1,24 @@
+name: Detection idea
+description: A new passive signal that reveals PHP or its version.
+labels: [detection]
+body:
+  - type: textarea
+    id: signal
+    attributes:
+      label: The signal
+      description: Header name and example value, cookie name, URL pattern, page marker …
+    validations:
+      required: true
+  - type: textarea
+    id: where
+    attributes:
+      label: Which software emits it, and how reliable is it
+    validations:
+      required: true
+  - type: checkboxes
+    id: passive
+    attributes:
+      label: Scope check
+      options:
+        - label: It can be read from responses the browser already receives (no extra request, no probing).
+          required: true

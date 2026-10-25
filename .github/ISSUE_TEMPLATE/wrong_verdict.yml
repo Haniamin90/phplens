@@ -1,0 +1,40 @@
+name: Wrong verdict
+description: PHPLens said a site is unpatched / patched / unverified and you believe that is wrong.
+labels: [verdict]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Please do not paste private URLs or credentials. The evidence list below is all we need.
+  - type: input
+    id: site
+    attributes:
+      label: Site (public URL or "private")
+    validations:
+      required: true
+  - type: dropdown
+    id: shown
+    attributes:
+      label: What PHPLens showed
+      options: [Danger (unpatched), Danger (end-of-life), Caution (outdated), Caution (distro build), Unverified (hidden), Unverified (partial), Patched, No PHP seen]
+    validations:
+      required: true
+  - type: input
+    id: expected
+    attributes:
+      label: What you expected and why (e.g. "php -v on the server prints 8.4.27")
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Evidence lines
+      description: Open the popup → Evidence → copy the lines (they are the headers PHPLens read). Include the Confidence chip value.
+      render: text
+    validations:
+      required: true
+  - type: input
+    id: env
+    attributes:
+      label: Browser and PHPLens version
+      placeholder: Chrome 131 / PHPLens 1.1.0

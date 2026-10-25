@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>PHPLens</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body data-level="none">
+  <header class="top">
+    <img src="../../icons/icon-32.png" alt="" width="26" height="26">
+    <div class="brand">
+      <div class="name">PHPLens</div>
+      <div class="tag">PHP patch check</div>
+    </div>
+    <button id="btn-options" class="icon-btn" title="Settings" aria-label="Settings">⚙</button>
+  </header>
+
+  <main id="main">
+    <section class="hero card">
+      <div class="hero-row">
+        <div class="status-icon" id="status-icon">·</div>
+        <div class="hero-text">
+          <div class="pill" id="level-pill">Checking…</div>
+          <h1 id="title">Reading server headers…</h1>
+          <div class="host" id="host"></div>
+        </div>
+      </div>
+      <p class="summary" id="summary"></p>
+      <div class="chips" id="chips"></div>
+      <p class="muted small source" id="source"></p>
+    </section>
+
+    <section class="card hidden" id="advisory-card">
+      <div class="card-head">Advisory</div>
+      <div class="adv">
+        <div class="adv-id" id="adv-id"></div>
+        <div class="adv-title" id="adv-title"></div>
+        <a id="adv-link" href="#" target="_blank" rel="noopener noreferrer">php.net changelog ↗</a>
+      </div>
+    </section>
+
+    <section class="card hidden" id="advice-card">
+      <div class="card-head">What to do</div>
+      <ul id="advice"></ul>
+    </section>
+
+    <section class="card hidden" id="notes-card">
+      <div class="card-head">Notes</div>
+      <ul id="notes"></ul>
+    </section>
+
+    <section class="card" id="evidence-card">
+      <button class="card-head toggle" id="evidence-toggle" aria-expanded="false">
+        Evidence <span id="evidence-count" class="count">0</span> <span class="chev">▾</span>
+      </button>
+      <ul id="evidence" class="hidden"></ul>
+      <p class="muted small" id="evidence-empty">Nothing seen yet. Headers are read as the page loads.</p>
+    </section>
+  </main>
+
+  <p class="warn hidden" id="notif-warn">Desktop notifications are blocked for this extension in the browser. Badge and banner still work.</p>
+  <footer class="actions">
+    <button id="btn-reload" class="btn">↻ Reload &amp; re-check</button>
+    <button id="btn-ignore" class="btn ghost">Ignore site ▾</button>
+  </footer>
+  <div id="snooze-menu" class="snooze hidden" role="menu">
+    <span class="muted small">Silence warnings for this site for…</span>
+    <div class="snooze-row"></div>
+  </div>
+  <p class="footnote">Passive check: PHPLens only reads what the server already sent. The only outbound request is an optional daily release-table refresh from php.net.</p>
+
+  <script src="../lib/common.js"></script>
+  <script src="popup.js"></script>
+</body>
+</html>

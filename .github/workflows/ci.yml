@@ -1,0 +1,37 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  test-and-build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Unit tests
+        run: npm test
+
+      - name: Build packages (icons, store-limit checks, zips)
+        run: npm run build
+
+      - name: Lint Firefox package with web-ext
+        run: npx --yes web-ext lint --source-dir dist/firefox --warnings-as-errors=false
+
+      - name: Validate Chromium manifest
+        run: node -e "const m=require('./dist/chromium/manifest.json'); if(m.manifest_version!==3) process.exit(1); console.log('manifest v3 ok', m.name, m.version)"
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: phplens-packages
+          path: dist/*.zip
+          retention-days: 14

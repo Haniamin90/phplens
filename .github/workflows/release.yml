@@ -1,0 +1,55 @@
+name: Release
+
+# Push a tag like v1.1.0 (matching manifest.json / package.json) to build the store
+# packages and attach them to a GitHub release. Store uploads stay manual – see
+# docs/PUBLISHING.md – so a bad build can never reach users automatically.
+
+on:
+  push:
+    tags: ['v*']
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Check that the tag matches the manifest version
+        run: |
+          TAG="${GITHUB_REF_NAME#v}"
+          VER=$(node -p "require('./manifest.json').version")
+          if [ "$TAG" != "$VER" ]; then
+            echo "tag v$TAG does not match manifest version $VER" >&2
+            exit 1
+          fi
+
+      - name: Test and build
+        run: npm run release
+
+      - name: Lint Firefox package
+        run: npx --yes web-ext lint --source-dir dist/firefox --warnings-as-errors=false
+
+      - name: Extract changelog section
+        id: notes
+        run: |
+          VER="${GITHUB_REF_NAME#v}"
+          awk -v ver="$VER" '
+            $0 ~ "^## "ver" " { on=1; next }
+            on && /^## / { exit }
+            on { print }
+          ' CHANGELOG.md > release-notes.md
+          if [ ! -s release-notes.md ]; then echo "No changelog entry for $VER" > release-notes.md; fi
+          cat release-notes.md
+
+      - uses: softprops/action-gh-release@v2
+        with:
+          name: PHPLens ${{ github.ref_name }}
+          body_path: release-notes.md
+          files: dist/*.zip

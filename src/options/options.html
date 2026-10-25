@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>PHPLens settings</title>
+  <link rel="stylesheet" href="options.css">
+</head>
+<body>
+  <div class="wrap">
+    <header class="top">
+      <img src="../../icons/icon-48.png" alt="" width="40" height="40">
+      <div>
+        <h1>PHPLens settings</h1>
+        <p class="muted">Passive PHP patch-level check for the sites you visit.</p>
+      </div>
+      <span id="saved" class="saved">Saved ✓</span>
+    </header>
+
+    <section class="card">
+      <h2>Alerts</h2>
+      <label class="row"><span>Show a colored badge on the toolbar icon</span><input type="checkbox" id="badge"></label>
+      <label class="row"><span>Desktop notification</span><input type="checkbox" id="notifications"></label>
+      <label class="row indent"><span>Notify on</span>
+        <select id="notifyLevel">
+          <option value="danger">Danger only (unpatched / end-of-life)</option>
+          <option value="caution">Danger and Caution (also outdated, distro builds)</option>
+        </select>
+      </label>
+      <p class="muted small indent">You get one alert per page load while a site is affected. To silence a site, pick a duration from the alert, the popup or the banner (1 hour, 1 day, 1 week, or for good). Those choices are listed under <em>Ignored sites</em> below.</p>
+      <div class="row indent between">
+        <span class="muted small" id="notify-result">Not seeing alerts? Send a test one. On Windows also check Focus Assist / Do Not Disturb and <em>Settings → System → Notifications</em> for your browser.</span>
+        <button id="test-notify" class="btn ghost">Send test notification</button>
+      </div>
+      <label class="row"><span>Show an in-page warning banner</span><input type="checkbox" id="banner"></label>
+      <label class="row indent"><span>Banner threshold</span>
+        <select id="bannerLevel">
+          <option value="danger">Danger only (unpatched / end-of-life)</option>
+          <option value="caution">Danger and Caution (also outdated, distro builds)</option>
+        </select>
+      </label>
+      <label class="row"><span>Treat distribution builds (e.g. <code>8.2.7-1ubuntu…</code>) as <b>Caution</b> instead of Danger, because distros backport security fixes without bumping the version</span><input type="checkbox" id="distroAsCaution"></label>
+    </section>
+
+    <section class="card">
+      <h2>Release table</h2>
+      <p class="muted">Versions below the <em>fixed</em> column are vulnerable to CVE-2026-109618 / CVE-2026-109619. Versions below <em>latest</em> are patched for that advisory but behind the current release.</p>
+      <label class="row"><span>Refresh the <em>latest release</em> per branch from php.net once a day<br><small class="muted">The visited site is never sent anywhere.</small></span><input type="checkbox" id="liveVersions"></label>
+      <label class="row"><span>Active fallback: when passive observation found no version, send <b>one HEAD request</b> to the page you are on and read its headers<br><small class="muted">On by default. Needed for Safari (no header observation) and for pages served entirely from cache. It is a plain request for the same page, nothing else.</small></span><input type="checkbox" id="activeFallback"></label>
+      <table id="table">
+        <thead><tr><th>Branch</th><th>Latest</th><th>Fixed in</th><th>Security fixes until</th></tr></thead>
+        <tbody></tbody>
+      </table>
+      <div class="row between">
+        <span class="muted small" id="table-meta"></span>
+        <button id="refresh" class="btn ghost">Refresh now</button>
+      </div>
+      <p class="muted small">PHP 8.1 and older are end-of-life and receive no fix; they are always reported as Danger.</p>
+    </section>
+
+    <section class="card">
+      <h2>Ignored sites</h2>
+      <p class="muted">Warnings for these sites are hidden (badge, banner and notifications) until the time runs out.</p>
+      <table id="snoozed">
+        <thead><tr><th>Site</th><th>Until</th><th></th></tr></thead>
+        <tbody></tbody>
+      </table>
+      <p class="muted small" id="snoozed-empty">No ignored sites.</p>
+      <div class="row between add-row">
+        <input id="add-host" type="text" placeholder="example.com" spellcheck="false">
+        <select id="add-hours"></select>
+        <button id="add-snooze" class="btn ghost">Add</button>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Privacy &amp; scope</h2>
+      <ul class="muted">
+        <li>PHPLens reads the <code>Server</code>, <code>X-Powered-By</code>, <code>Set-Cookie</code>, <code>X-Generator</code>, <code>X-Pingback</code>, <code>Link</code> and cache headers of responses your browser already received, plus page hints (URLs ending in <code>.php</code>, generator meta tag, CMS resource paths, visible PHP error output, phpinfo pages).</li>
+        <li>Apart from the single HEAD fallback above (which you can switch off), it never sends requests to the sites you visit, never submits data and never attempts to trigger the vulnerability.</li>
+        <li>Per-tab results are kept in session storage and are gone when the browser closes. Nothing is uploaded anywhere.</li>
+        <li>A hidden version (<code>expose_php=Off</code>) is reported as <b>Unverified</b>, not as safe.</li>
+      </ul>
+    </section>
+  </div>
+
+  <script src="../lib/common.js"></script>
+  <script src="../lib/php-check.js"></script>
+  <script src="options.js"></script>
+</body>
+</html>

@@ -1,0 +1,19 @@
+{
+  "__comment": "Overrides merged on top of manifest.json by tools/build.mjs for the Firefox build.",
+  "background": {
+    "scripts": [
+      "src/lib/common.js",
+      "src/lib/php-check.js",
+      "src/background.js"
+    ]
+  },
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "phplens@haniamin90.github.io",
+      "strict_min_version": "128.0",
+      "data_collection_permissions": {
+        "required": ["none"]
+      }
+    }
+  }
+}
