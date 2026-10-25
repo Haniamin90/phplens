@@ -1,7 +1,7 @@
 (function () {
   'use strict';
   const GL = globalThis.PHPLens;
-  const { api, escapeHtml } = GL;
+  const { api, el } = GL;
   const $ = (id) => document.getElementById(id);
   const BOOLS = ['badge', 'notifications', 'banner', 'distroAsCaution', 'liveVersions', 'activeFallback'];
   let savedTimer = null;
@@ -23,9 +23,14 @@
     const adv = table.advisories[0];
     const rows = Object.keys(table.branches).sort(GL.php.compareVersions).map((b) => {
       const info = table.branches[b];
-      return `<tr><td class="mono">PHP ${escapeHtml(b)}</td><td class="mono"><span class="ok">${escapeHtml(info.latest)}</span></td><td class="mono">${escapeHtml(adv.fixed[b] || '–')}</td><td>${escapeHtml(info.securityUntil || '–')}</td></tr>`;
+      return el('tr', {}, [
+        el('td', { class: 'mono', text: 'PHP ' + b }),
+        el('td', { class: 'mono' }, [el('span', { class: 'ok', text: info.latest })]),
+        el('td', { class: 'mono', text: adv.fixed[b] || '–' }),
+        el('td', { text: info.securityUntil || '–' })
+      ]);
     });
-    $('table').querySelector('tbody').innerHTML = rows.join('');
+    $('table').querySelector('tbody').replaceChildren(...rows);
     const src = table.source === 'php.net' ? 'php.net (live)' : 'bundled';
     let meta = `Source: ${src} · table date ${table.updated}`;
     if (res.fetchedAt) meta += ` · last check ${GL.formatAgo(res.fetchedAt)}`;
@@ -35,17 +40,19 @@
 
   function renderSnoozed(snoozed) {
     const entries = Object.entries(snoozed || {}).sort((a, b) => a[0].localeCompare(b[0]));
-    $('snoozed').querySelector('tbody').innerHTML = entries.map(([host, until]) => {
+    const rows = entries.map(([host, until]) => {
       const when = until === 0 ? 'for good' : new Date(until).toLocaleString();
-      return `<tr><td class="mono">${escapeHtml(host)}</td><td>${escapeHtml(when)}</td><td><button data-host="${escapeHtml(host)}">Remove</button></td></tr>`;
-    }).join('');
+      const remove = el('button', { type: 'button', text: 'Remove' });
+      remove.addEventListener('click', async () => {
+        const res = await api.runtime.sendMessage({ type: 'setSnooze', host, hours: -1 });
+        renderSnoozed(res && res.snoozed);
+        flashSaved();
+      });
+      return el('tr', {}, [el('td', { class: 'mono', text: host }), el('td', { text: when }), el('td', {}, [remove])]);
+    });
+    $('snoozed').querySelector('tbody').replaceChildren(...rows);
     $('snoozed-empty').classList.toggle('hidden', entries.length > 0);
     $('snoozed').classList.toggle('hidden', entries.length === 0);
-    $('snoozed').querySelectorAll('button[data-host]').forEach((b) => b.addEventListener('click', async () => {
-      const res = await api.runtime.sendMessage({ type: 'setSnooze', host: b.dataset.host, hours: -1 });
-      renderSnoozed(res && res.snoozed);
-      flashSaved();
-    }));
   }
 
   async function load() {
@@ -53,7 +60,7 @@
     for (const k of BOOLS) $(k).checked = !!s[k];
     $('bannerLevel').value = s.bannerLevel || 'danger';
     $('notifyLevel').value = s.notifyLevel || 'danger';
-    $('add-hours').innerHTML = GL.SNOOZE_OPTIONS.map((o) => `<option value="${o.hours}">${escapeHtml(o.label)}</option>`).join('');
+    $('add-hours').replaceChildren(...GL.SNOOZE_OPTIONS.map((o) => el('option', { value: o.hours, text: o.label })));
     $('add-hours').value = '0';
     renderSnoozed(s.snoozed);
     const res = await api.runtime.sendMessage({ type: 'getTable' });

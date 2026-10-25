@@ -121,6 +121,22 @@
     })[c]);
   }
 
+  /**
+   * Tiny DOM builder so UI code never assigns untrusted strings to innerHTML.
+   * el('span', { class: 'chip', text: 'x', 'data-hours': 1 }, ['text', otherNode])
+   */
+  function el(tag, attrs, children) {
+    const node = document.createElement(tag);
+    for (const [k, v] of Object.entries(attrs || {})) {
+      if (v === null || v === undefined || v === false) continue;
+      if (k === 'text') node.textContent = String(v);
+      else if (k === 'class') { if (v) node.className = v; }
+      else node.setAttribute(k, String(v));
+    }
+    for (const c of children || []) if (c !== null && c !== undefined && c !== '') node.append(c);
+    return node;
+  }
+
   function formatAgo(ts) {
     if (!ts) return 'never';
     const s = Math.max(0, Math.round((Date.now() - ts) / 1000));
@@ -134,6 +150,6 @@
     __common: true,
     api, LEVELS, DEFAULT_SETTINGS, SNOOZE_OPTIONS,
     deepMerge, getSettings, saveSettings, snoozeFor, describeSnooze,
-    isWebUrl, hostOf, baseDomain, sameSite, escapeHtml, formatAgo
+    isWebUrl, hostOf, baseDomain, sameSite, escapeHtml, el, formatAgo
   });
 })(globalThis);

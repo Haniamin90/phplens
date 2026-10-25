@@ -1,5 +1,8 @@
 dist/
 node_modules/
+.web-extension-id
+web-ext-artifacts/
+.env
 safari/
 *.xpi
 *.crx

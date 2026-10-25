@@ -1,5 +1,11 @@
 # Changelog
 
+## Unreleased
+
+- All UI (popup, settings, in-page dialog) builds dynamic content with DOM APIs; no untrusted strings reach innerHTML. Firefox add-on linter: 0 warnings.
+- Firefox minimum version 140 (desktop) / 142 (Android); Firefox for Android listed.
+- AMO submission metadata (`store/amo-metadata.json`) and `npm run sign:firefox`.
+
 ## 1.1.0 – 2026-10-25
 
 First store release, under the name **PHPLens** (previously GuardLens; the JS namespace, custom element and Firefox add-on id placeholder changed accordingly).

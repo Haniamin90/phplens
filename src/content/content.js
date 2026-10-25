@@ -143,16 +143,15 @@
     removeBanner();
     const v = state.verdict;
     const danger = v.level === 'danger';
-    const color = danger ? '#ef4444' : '#f59e0b';
-    const soft = danger ? 'rgba(239,68,68,' : 'rgba(245,158,11,';
+    const el = GL.el;
     host = document.createElement('phplens-banner');
     host.setAttribute('role', 'dialog');
     host.setAttribute('aria-modal', 'true');
     host.setAttribute('aria-label', 'PHPLens warning');
+    // The level colour reaches the shadow tree as a custom property; the markup below is a
+    // fixed template with no interpolated data. Every dynamic value is set via textContent/DOM.
+    host.style.setProperty('--c', danger ? '#ef4444' : '#f59e0b');
     const root = host.attachShadow({ mode: 'closed' });
-    const esc = GL.escapeHtml;
-    const li = (arr) => arr.map((x) => '<li>' + esc(typeof x === 'string' ? x : x.text) + '</li>').join('');
-    const chip = (label, value) => value ? `<span class="chip">${esc(label)} <b>${esc(value)}</b></span>` : '';
     root.innerHTML = `
       <style>
         :host { all: initial; position: fixed; inset: 0; z-index: 2147483647; display: grid; place-items: center; padding: 16px;
@@ -161,16 +160,16 @@
         @keyframes fade { from { opacity: 0; } to { opacity: 1; } }
         @keyframes pop { from { opacity: 0; transform: translateY(14px) scale(.96); } to { opacity: 1; transform: none; } }
         .card { position: relative; width: min(540px, 100%); max-height: calc(100vh - 32px); overflow: hidden auto; border-radius: 20px;
-                background: linear-gradient(180deg, #111a33, #0b1020 70%); border: 1px solid ${soft}.55);
-                box-shadow: 0 0 0 1px rgba(255,255,255,.04), 0 30px 80px -20px ${soft}.6), 0 40px 90px -30px rgba(0,0,0,.8);
+                background: linear-gradient(180deg, #111a33, #0b1020 70%); border: 1px solid color-mix(in srgb, var(--c) 55%, transparent);
+                box-shadow: 0 0 0 1px rgba(255,255,255,.04), 0 30px 80px -20px color-mix(in srgb, var(--c) 60%, transparent), 0 40px 90px -30px rgba(0,0,0,.8);
                 animation: pop .3s cubic-bezier(.2,.9,.3,1.2); }
-        .glow { position: absolute; inset: -40% -20% auto; height: 60%; background: radial-gradient(closest-side, ${soft}.35), transparent); pointer-events: none; }
+        .glow { position: absolute; inset: -40% -20% auto; height: 60%; background: radial-gradient(closest-side, color-mix(in srgb, var(--c) 35%, transparent), transparent); pointer-events: none; }
         .head { position: relative; z-index: 1; display: flex; gap: 16px; align-items: center; padding: 22px 48px 6px 22px; }
         .head > div:last-child { min-width: 0; flex: 1; }
-        .icon { width: 56px; height: 56px; flex: none; border-radius: 18px; background: ${color}; color: #0b1020; display: grid; place-items: center;
-                font-weight: 900; font-size: 32px; box-shadow: 0 12px 30px -10px ${color}; animation: pulse 2s ease-in-out infinite; }
-        @keyframes pulse { 0%,100% { box-shadow: 0 12px 30px -10px ${color}; } 50% { box-shadow: 0 12px 40px -4px ${color}; } }
-        .pill { display: inline-block; font-size: 10.5px; letter-spacing: .1em; text-transform: uppercase; font-weight: 800; color: #0b1020; background: ${color}; border-radius: 999px; padding: 2px 9px; }
+        .icon { width: 56px; height: 56px; flex: none; border-radius: 18px; background: var(--c); color: #0b1020; display: grid; place-items: center;
+                font-weight: 900; font-size: 32px; box-shadow: 0 12px 30px -10px var(--c); animation: pulse 2s ease-in-out infinite; }
+        @keyframes pulse { 0%,100% { box-shadow: 0 12px 30px -10px var(--c); } 50% { box-shadow: 0 12px 40px -4px var(--c); } }
+        .pill { display: inline-block; font-size: 10.5px; letter-spacing: .1em; text-transform: uppercase; font-weight: 800; color: #0b1020; background: var(--c); border-radius: 999px; padding: 2px 9px; }
         .brand { font-size: 10.5px; letter-spacing: .1em; text-transform: uppercase; font-weight: 800; color: #9aa5c4; margin-left: 8px; }
         h2 { margin: 6px 0 0; font-size: 20px; line-height: 1.2; font-weight: 800; }
         .host { font-size: 12.5px; color: #9aa5c4; margin-top: 2px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
@@ -183,7 +182,7 @@
         button { all: unset; cursor: pointer; font: inherit; font-size: 13px; font-weight: 700; padding: 10px 14px; border-radius: 11px;
                  background: rgba(255,255,255,.07); border: 1px solid rgba(255,255,255,.12); color: #eef2ff; transition: background .15s, transform .1s; }
         button:hover { background: rgba(255,255,255,.14); } button:active { transform: scale(.98); }
-        button.ok { background: ${color}; color: #0b1020; border-color: transparent; box-shadow: 0 10px 24px -12px ${color}; margin-left: auto; }
+        button.ok { background: var(--c); color: #0b1020; border-color: transparent; box-shadow: 0 10px 24px -12px var(--c); margin-left: auto; }
         button.x { position: absolute; z-index: 3; top: 14px; right: 14px; width: 32px; height: 32px; padding: 0; display: grid; place-items: center; border-radius: 10px; font-size: 14px; color: #9aa5c4; }
         button.x:hover { color: #fff; }
         .panel { display: none; margin: 0 22px; padding: 12px 14px; border-radius: 12px; background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.08); font-size: 13px; }
@@ -194,7 +193,7 @@
         .panel a { color: #93c5fd; }
         .snooze { display: none; align-items: center; gap: 8px; flex-wrap: wrap; margin: 0 22px; padding: 12px 14px; border-radius: 12px; background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.08); font-size: 13px; }
         .snooze.open { display: flex; }
-        .snooze span { color: #9aa5c4; flex-basis: 100%; }
+        .snooze .lbl { color: #9aa5c4; flex-basis: 100%; }
         .snooze button { padding: 7px 12px; font-size: 12.5px; }
         .snooze button.f { border-color: rgba(239,68,68,.6); }
         .foot { padding: 0 22px 16px; font-size: 11px; color: #64748b; }
@@ -205,22 +204,16 @@
         <div class="glow"></div>
         <button class="x" aria-label="Close">✕</button>
         <div class="head">
-          <div class="icon">${danger ? '!' : '?'}</div>
+          <div class="icon"></div>
           <div>
-            <span class="pill">${danger ? 'Danger' : 'Caution'}</span><span class="brand">PHPLens</span>
-            <h2>${esc(v.title)}</h2>
-            <div class="host">${esc(location.hostname)}</div>
+            <span class="pill"></span><span class="brand">PHPLens</span>
+            <h2></h2>
+            <div class="host"></div>
           </div>
         </div>
         <div class="body">
-          <p class="sum">${esc(v.summary)}</p>
-          <div class="chips">
-            ${chip('Detected', v.version ? 'PHP ' + v.version + (v.distro ? ' (distro)' : '') : '')}
-            ${chip('Fixed in', v.fixed)}
-            ${chip('Latest ' + (v.branch || ''), v.latest)}
-            ${chip('Confidence', v.confidence)}
-            ${chip('App', v.app)}
-          </div>
+          <p class="sum"></p>
+          <div class="chips"></div>
         </div>
         <div class="actions">
           <button class="d">Details</button>
@@ -228,35 +221,66 @@
           <button class="ok">Got it</button>
         </div>
         <div class="snooze">
-          <span>Silence warnings for <b>${esc(location.hostname)}</b> for:</span>
-          ${GL.SNOOZE_OPTIONS.map((o) => `<button data-hours="${o.hours}" class="${o.hours === 0 ? 'f' : ''}">${esc(o.label)}</button>`).join('')}
+          <span class="lbl"></span>
           <button class="c">Cancel</button>
         </div>
-        <div class="panel">
-          ${v.advice && v.advice.length ? '<h4>What to do</h4><ul>' + li(v.advice) + '</ul>' : ''}
-          ${v.notes && v.notes.length ? '<h4>Notes</h4><ul>' + li(v.notes) + '</ul>' : ''}
-          <h4>Evidence (read from the server's own responses)</h4><ul>${(state.evidence || []).map((e) => '<li class="ev">' + esc(e.text) + '</li>').join('')}</ul>
-          <h4>Advisory</h4><ul><li>${esc(v.advisory.id)} – ${esc(v.advisory.title)} · <a href="${esc(v.advisory.url)}" target="_blank" rel="noopener noreferrer">php.net changelog</a></li></ul>
-        </div>
+        <div class="panel"></div>
         <div class="foot">Passive check – PHPLens only read what this server sent. Closing hides this for the current page only.</div>
       </div>`;
+    const q = (s) => root.querySelector(s);
+
+    q('.icon').textContent = danger ? '!' : '?';
+    q('.pill').textContent = danger ? 'Danger' : 'Caution';
+    q('h2').textContent = v.title;
+    q('.host').textContent = location.hostname;
+    q('.sum').textContent = v.summary;
+
+    const chips = [
+      ['Detected', v.version ? 'PHP ' + v.version + (v.distro ? ' (distro)' : '') : ''],
+      ['Fixed in', v.fixed],
+      ['Latest ' + (v.branch || ''), v.latest],
+      ['Confidence', v.confidence],
+      ['App', v.app]
+    ].filter(([, val]) => val).map(([label, val]) => el('span', { class: 'chip' }, [label + ' ', el('b', { text: val })]));
+    q('.chips').replaceChildren(...chips);
+
     const close = () => { dismissed = true; removeBanner(); };
+    const snooze = q('.snooze');
+    const panel = q('.panel');
+    q('.lbl').replaceChildren('Silence warnings for ', el('b', { text: location.hostname }), ' for:');
+    const cancel = q('button.c');
+    for (const o of GL.SNOOZE_OPTIONS) {
+      const b = el('button', { class: o.hours === 0 ? 'f' : '', text: o.label });
+      b.addEventListener('click', () => {
+        api.runtime.sendMessage({ type: 'setSnooze', host: location.hostname, hours: o.hours }).catch(() => {});
+        close();
+      });
+      snooze.insertBefore(b, cancel);
+    }
+
+    const section = (title, items, cls) => {
+      if (!items || !items.length) return;
+      panel.append(el('h4', { text: title }), el('ul', {}, items.map((x) => el('li', { class: cls || '', text: typeof x === 'string' ? x : x.text }))));
+    };
+    section('What to do', v.advice);
+    section('Notes', v.notes);
+    section("Evidence (read from the server's own responses)", state.evidence || [], 'ev');
+    const advUrl = /^https:\/\/(www\.)?php\.net\//.test(v.advisory.url || '') ? v.advisory.url : 'https://www.php.net/ChangeLog-8.php';
+    panel.append(el('h4', { text: 'Advisory' }), el('ul', {}, [el('li', {}, [
+      v.advisory.id + ' – ' + v.advisory.title + ' · ',
+      el('a', { href: advUrl, target: '_blank', rel: 'noopener noreferrer', text: 'php.net changelog' })
+    ])]));
+
     keyHandler = (e) => { if (e.key === 'Escape') { e.stopPropagation(); close(); } };
     document.addEventListener('keydown', keyHandler, true);
-    root.querySelector('.backdrop').addEventListener('click', close);
-    root.querySelector('button.x').addEventListener('click', close);
-    root.querySelector('button.ok').addEventListener('click', close);
-    const panel = root.querySelector('.panel');
-    const snooze = root.querySelector('.snooze');
-    root.querySelector('button.d').addEventListener('click', () => { panel.classList.toggle('open'); snooze.classList.remove('open'); });
-    root.querySelector('button.i').addEventListener('click', () => { snooze.classList.toggle('open'); panel.classList.remove('open'); });
-    root.querySelector('button.c').addEventListener('click', () => snooze.classList.remove('open'));
-    snooze.querySelectorAll('button[data-hours]').forEach((b) => b.addEventListener('click', () => {
-      api.runtime.sendMessage({ type: 'setSnooze', host: location.hostname, hours: Number(b.dataset.hours) }).catch(() => {});
-      close();
-    }));
+    q('.backdrop').addEventListener('click', close);
+    q('button.x').addEventListener('click', close);
+    q('button.ok').addEventListener('click', close);
+    q('button.d').addEventListener('click', () => { panel.classList.toggle('open'); snooze.classList.remove('open'); });
+    q('button.i').addEventListener('click', () => { snooze.classList.toggle('open'); panel.classList.remove('open'); });
+    cancel.addEventListener('click', () => snooze.classList.remove('open'));
     (document.body || document.documentElement).appendChild(host);
-    root.querySelector('button.ok').focus();
+    q('button.ok').focus();
   }
 
   // Never more than one dialog, even if something re-mounts the DOM.

@@ -135,9 +135,34 @@ in `manifest.firefox.json` **before** the first submission; it cannot be changed
 **Self-distribution / enterprise**: submit as *On your own* (unlisted); AMO returns a signed
 `.xpi` you can host anywhere or deploy by policy.
 
-**Firefox for Android**: add `"gecko_android": {}` under `browser_specific_settings` in
-`manifest.firefox.json` to opt in; the extension works there because it needs no desktop-only
-API (notifications are simply unavailable on Android and are skipped).
+**Firefox for Android** is included: `manifest.firefox.json` declares `gecko_android`
+(minimum 142, the first Android release that understands the data-collection key). The
+extension needs no desktop-only API; notifications are simply unavailable there and skipped.
+
+### Command-line submission (recommended)
+
+Instead of clicking through the upload form, submit with Mozilla's own `web-ext` tool and
+the listing metadata in `store/amo-metadata.json` (summary, description, category, tags,
+homepage, support URL, licence, release notes and notes for the reviewer):
+
+1. Sign in at https://addons.mozilla.org/developers/ and generate API credentials at
+   https://addons.mozilla.org/developers/addon/api/key/ (a JWT issuer and secret).
+2. In a terminal, from the project folder, with the credentials in environment variables
+   that `web-ext` reads automatically (never commit them):
+   ```bash
+   npm run build
+   WEB_EXT_API_KEY="user:12345:67" WEB_EXT_API_SECRET="…" npm run sign:firefox
+   ```
+   PowerShell: `$env:WEB_EXT_API_KEY="user:12345:67"; $env:WEB_EXT_API_SECRET="…"; npm run sign:firefox`
+3. `web-ext` uploads `dist/firefox`, waits for validation, creates the listed add-on with the
+   metadata, and prints the AMO URL. A listed add-on is distributed by AMO, so no signed
+   file is downloaded; the version enters the review queue.
+4. Finish on the AMO developer hub: upload screenshots (*Edit Listing → Images*) and check
+   the *Privacy policy* field (paste `PRIVACY.md`); the submission API does not take either.
+
+The first run of `web-ext sign` creates the add-on (the id comes from the manifest); later
+runs with a higher version submit updates to it. Keep `store/amo-metadata.json` in sync with
+`CHANGELOG.md` for the release notes.
 
 ---
 

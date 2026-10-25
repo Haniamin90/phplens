@@ -18,6 +18,7 @@
     "demo": "node tools/demo-server.mjs",
     "lint:firefox": "npx --yes web-ext lint --source-dir dist/firefox",
     "run:firefox": "npx --yes web-ext run --source-dir dist/firefox",
+    "sign:firefox": "npx --yes web-ext sign --source-dir dist/firefox --artifacts-dir dist/signed --channel listed --amo-metadata store/amo-metadata.json",
     "release": "npm test && npm run build"
   },
   "engines": {

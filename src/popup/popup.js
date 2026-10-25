@@ -1,7 +1,7 @@
 (function () {
   'use strict';
   const GL = globalThis.PHPLens;
-  const { api, LEVELS, escapeHtml } = GL;
+  const { api, LEVELS, el } = GL;
   const $ = (id) => document.getElementById(id);
   const ICONS = { danger: '!', caution: '!', unknown: '?', safe: '✓', none: '·' };
 
@@ -16,13 +16,13 @@
   }
 
   function chip(label, value, cls) {
-    return `<span class="chip ${cls || ''}">${escapeHtml(label)} <b>${escapeHtml(value)}</b></span>`;
+    return el('span', { class: 'chip ' + (cls || '') }, [label + ' ', el('b', { text: value })]);
   }
 
   function fillList(id, items) {
-    const el = $(id);
-    el.innerHTML = (items || []).map((x) => `<li>${escapeHtml(typeof x === 'string' ? x : x.text)}</li>`).join('');
-    return (items || []).length;
+    const list = items || [];
+    $(id).replaceChildren(...list.map((x) => el('li', { text: typeof x === 'string' ? x : x.text })));
+    return list.length;
   }
 
   function sourceLine(state) {
@@ -69,7 +69,7 @@
     if (v.app || state.app) chips.push(chip('App', (v.app || state.app).slice(0, 40), ''));
     if (v.displayErrors) chips.push(chip('display_errors', 'on', 'bad'));
     if (state.server) chips.push(chip('Server', state.server.slice(0, 40), ''));
-    $('chips').innerHTML = chips.join('');
+    $('chips').replaceChildren(...chips);
 
     const showAdv = ['vulnerable', 'vulnerable-distro', 'eol', 'outdated', 'partial', 'hidden'].includes(v.status);
     $('advisory-card').classList.toggle('hidden', !showAdv);
@@ -95,8 +95,8 @@
 
   function buildSnoozeMenu() {
     const row = $('snooze-menu').querySelector('.snooze-row');
-    row.innerHTML = GL.SNOOZE_OPTIONS.map((o) =>
-      `<button data-hours="${o.hours}" class="${o.hours === 0 ? 'forever' : ''}">${escapeHtml(o.label)}</button>`).join('');
+    row.replaceChildren(...GL.SNOOZE_OPTIONS.map((o) =>
+      el('button', { 'data-hours': o.hours, class: o.hours === 0 ? 'forever' : '', text: o.label })));
     row.querySelectorAll('button').forEach((b) => b.addEventListener('click', async () => {
       const host = currentState && currentState.host ? currentState.host : GL.hostOf(currentTab.url);
       await api.runtime.sendMessage({ type: 'setSnooze', host, hours: Number(b.dataset.hours) });
