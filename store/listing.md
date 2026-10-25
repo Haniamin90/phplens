@@ -48,6 +48,16 @@ anywhere. Full policy: PRIVACY.md in the repository.
 
 Open source under the MIT licence.
 
+## Status
+
+| Store | Status | Listing |
+|---|---|---|
+| Firefox Add-ons (AMO) | 1.1.0 submitted 2026-10-25 via `npm run sign:firefox`, in review | https://addons.mozilla.org/firefox/addon/phplens/ · manage: https://addons.mozilla.org/developers/addon/phplens/edit |
+| Chrome Web Store | not yet submitted | – |
+| Microsoft Edge Add-ons | not yet submitted | – |
+| Opera Add-ons | not yet submitted | – |
+| Safari App Store | not yet submitted | – |
+
 ## URLs
 
 - Privacy policy: https://haniamin90.github.io/phplens/PRIVACY

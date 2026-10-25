@@ -70,10 +70,14 @@ tests; `npm run icons` regenerates the PNG icons from `tools/gen-icons.mjs`.)
 
 ## Install
 
-Store listings are pending review; until they are live, download the latest
-`phplens-chromium-*.zip` or `phplens-firefox-*.zip` from the
-[Releases page](https://github.com/Haniamin90/phplens/releases), unzip it, and load it as
-described below.
+| Browser | Where |
+|---|---|
+| Firefox (desktop and Android) | [addons.mozilla.org/firefox/addon/phplens](https://addons.mozilla.org/firefox/addon/phplens/) – submitted, awaiting Mozilla's review |
+| Chrome, Edge, Brave, Opera | store submissions pending |
+
+Until the listings are live, download the latest `phplens-chromium-*.zip` or
+`phplens-firefox-*.zip` from the [Releases page](https://github.com/Haniamin90/phplens/releases),
+unzip it, and load it as described below.
 
 **Chrome / Edge / Brave / Opera / Vivaldi**
 1. Open `chrome://extensions` (Edge: `edge://extensions`), enable *Developer mode*.
