@@ -1,5 +1,5 @@
-// Renders the store screenshots (1280x800 PNG) with headless Edge/Chrome from the real
-// popup, settings page and in-page dialog, driven by tools/screenshots/mock-api.js.
+// Renders the store screenshots (1280x800 PNG) and promo tiles with headless Edge/Chrome
+// from the real popup, settings page and in-page dialog, driven by tools/screenshots/mock-api.js.
 // Usage: node tools/screenshots.mjs   -> store/screenshots/*.png
 import { mkdirSync, readFileSync, writeFileSync, existsSync, rmSync, copyFileSync } from 'node:fs';
 import { fileURLToPath, pathToFileURL } from 'node:url';
@@ -94,13 +94,31 @@ function dialogPage() {
     </div></section>
     <aside><div class="card"><h3>Checkout</h3><div>Subtotal: €412.00</div><div>Shipping: €4.90</div><div style="margin-top:8px;font-weight:700">Total: €416.90</div><span class="btn">Pay now</span></div></aside>
   </main>
-  ${mockTag('dialog')}
+  ${mockTag()}
   <script src="${abs('src/lib/common.js')}"></script>
   <script src="${abs('src/lib/php-check.js')}"></script>
   <script src="${abs('src/content/content.js')}"></script>`;
   const file = join(TMP, 'dialog.html');
   writeFileSync(file, html);
   return pathToFileURL(file).href + '#dialog';
+}
+
+/** Promo tile (Chrome Web Store small tile 440x280, marquee 1400x560). */
+function tile(name, w, h, big) {
+  const html = `<!doctype html><meta charset="utf-8"><style>
+    * { box-sizing: border-box; } html, body { margin: 0; width: ${w}px; height: ${h}px; overflow: hidden; }
+    body { display: flex; align-items: center; gap: ${big ? 56 : 28}px; padding: 0 ${big ? 110 : 34}px; font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; color: #eef2ff;
+           background: radial-gradient(60% 120% at 0% 0%, rgba(99,102,241,.45), transparent 70%), radial-gradient(50% 100% at 100% 100%, rgba(239,68,68,.25), transparent 70%), linear-gradient(135deg, #141d3b, #0b1020 70%); }
+    img { width: ${big ? 260 : 120}px; height: ${big ? 260 : 120}px; flex: none; filter: drop-shadow(0 20px 40px rgba(0,0,0,.5)); }
+    h1 { margin: 0; font-size: ${big ? 76 : 40}px; font-weight: 800; letter-spacing: -.02em; line-height: 1; }
+    p { margin: ${big ? 18 : 10}px 0 0; font-size: ${big ? 30 : 17}px; line-height: 1.35; color: #c7d2fe; max-width: ${big ? 820 : 270}px; }
+    .tag { display: inline-block; margin-top: ${big ? 26 : 12}px; font-size: ${big ? 18 : 11.5}px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; padding: ${big ? '10px 18px' : '5px 10px'}; border-radius: 999px; background: rgba(34,197,94,.15); border: 1px solid rgba(34,197,94,.45); color: #86efac; }
+  </style>
+  <img src="${abs('store/listing-icon-512.png')}">
+  <div><h1>PHPLens</h1><p>Know if the website's PHP server is patched – before you log in or pay.</p><span class="tag">Passive · reads headers only</span></div>`;
+  const file = join(TMP, name + '.html');
+  writeFileSync(file, html);
+  return pathToFileURL(file).href;
 }
 
 const shots = [
@@ -113,14 +131,16 @@ const shots = [
     title: 'Green when the server is current', sub: 'Patched against the advisory and on the latest release of its branch, with the evidence lines the verdict is based on.',
     pill: 'Confidence rating on every verdict', url: popupSafe, glow: 'rgba(34,197,94,.35)', height: 630, scale: 1.2
   })],
-  ['4-settings', options]
+  ['4-settings', options],
+  ['promo-small-440x280', tile('tile-small', 440, 280, false), 440, 280],
+  ['promo-marquee-1400x560', tile('tile-marquee', 1400, 560, true), 1400, 560]
 ];
 
-for (const [name, url] of shots) {
+for (const [name, url, w = W, h = H] of shots) {
   const out = join(OUT, name + '.png');
   execFileSync(browser, [
     '--headless=new', '--disable-gpu', '--hide-scrollbars', '--no-first-run', '--no-default-browser-check',
-    '--allow-file-access-from-files', `--window-size=${W},${H}`, '--force-device-scale-factor=1',
+    '--allow-file-access-from-files', `--window-size=${w},${h}`, '--force-device-scale-factor=1',
     '--virtual-time-budget=4000', `--screenshot=${out}`, url
   ], { stdio: 'ignore', timeout: 60000 });
   console.log('wrote', out);
