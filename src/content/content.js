@@ -232,7 +232,8 @@
     q('.icon').textContent = danger ? '!' : '?';
     q('.pill').textContent = danger ? 'Danger' : 'Caution';
     q('h2').textContent = v.title;
-    q('.host').textContent = location.hostname;
+    const shownHost = state.host || location.hostname; // same value in practice; state.host survives odd origins
+    q('.host').textContent = shownHost;
     q('.sum').textContent = v.summary;
 
     const chips = [
@@ -247,7 +248,7 @@
     const close = () => { dismissed = true; removeBanner(); };
     const snooze = q('.snooze');
     const panel = q('.panel');
-    q('.lbl').replaceChildren('Silence warnings for ', el('b', { text: location.hostname }), ' for:');
+    q('.lbl').replaceChildren('Silence warnings for ', el('b', { text: shownHost }), ' for:');
     const cancel = q('button.c');
     for (const o of GL.SNOOZE_OPTIONS) {
       const b = el('button', { class: o.hours === 0 ? 'f' : '', text: o.label });

@@ -1,5 +1,6 @@
 dist/
 node_modules/
+tools/screenshots/.tmp/
 .web-extension-id
 web-ext-artifacts/
 .env
