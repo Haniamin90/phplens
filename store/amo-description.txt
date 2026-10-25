@@ -1,0 +1,30 @@
+PHPLens tells you, as you browse, whether the server behind a website runs a PHP version that is unpatched against CVE-2026-109618 / CVE-2026-109619 (session.upload_progress use-after-free, unauthenticated remote code execution, CVSS 9.2, exploited in the wild) or a PHP branch that no longer receives security fixes.
+
+HOW IT WORKS
+
+• Reads the response headers your browser already received (Server, X-Powered-By, cookies, CMS headers) and a few hints in the page (generator tag, .php URLs, visible PHP errors, phpinfo pages).
+• Compares the advertised version with the patched releases (8.2.35, 8.3.36, 8.4.27, 8.5.12) and the latest release per branch, refreshed daily from php.net.
+• Never probes, never sends payloads, never tries to trigger anything. The only request it can make to a site is one HEAD request for the page you are already on, when the passive check saw no version; you can switch that off.
+
+WHAT YOU SEE
+
+• A coloured toolbar badge: red = unpatched or end-of-life, amber = behind the latest release or a distro build that may hide backported fixes, grey = PHP detected but version hidden, green = patched.
+• A popup with the evidence, the advisory, a confidence rating and advice.
+• A one-line notification and a centered in-page dialog when a site is unsafe.
+• Per-site silencing: snooze for an hour, a day, a week, or ignore for good.
+
+READ THE VERDICT CORRECTLY
+
+• A hidden version (expose_php=Off) is reported as unverified, not as safe.
+• Distribution builds (Debian, Ubuntu, RHEL) backport fixes without changing the version number, so they are shown as Caution by default.
+• Proxies and CDNs can strip or cache headers; the popup says when a result came from a cache and lowers the confidence.
+
+AFTER INSTALLING ON FIREFOX
+
+Open the add-on's Permissions tab and allow "Access your data for all websites", otherwise headers cannot be observed.
+
+PRIVACY
+
+No accounts, no analytics, no telemetry. Nothing about the sites you visit is sent anywhere. Policy: https://haniamin90.github.io/phplens/PRIVACY
+
+Open source (MIT): https://github.com/Haniamin90/phplens
