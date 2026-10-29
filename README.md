@@ -72,21 +72,19 @@ tests; `npm run icons` regenerates the PNG icons from `tools/gen-icons.mjs`.)
 
 | Browser | Where |
 |---|---|
-| Firefox (desktop and Android) | [addons.mozilla.org/firefox/addon/phplens](https://addons.mozilla.org/firefox/addon/phplens/) – submitted, awaiting Mozilla's review |
-| Chrome, Edge, Brave, Opera | store submissions pending |
+| Firefox (desktop and Android) | **[Install from addons.mozilla.org](https://addons.mozilla.org/firefox/addon/phplens/)** |
+| Chrome, Edge, Brave, Opera | store submissions pending – until then, download `phplens-chromium-*.zip` from the [Releases page](https://github.com/Haniamin90/phplens/releases), unzip it, and load it as described below |
 
-Until the listings are live, download the latest `phplens-chromium-*.zip` or
-`phplens-firefox-*.zip` from the [Releases page](https://github.com/Haniamin90/phplens/releases),
-unzip it, and load it as described below.
+[![Firefox Add-on](https://img.shields.io/amo/v/phplens?label=Firefox%20Add-on&logo=firefox)](https://addons.mozilla.org/firefox/addon/phplens/)
 
 **Chrome / Edge / Brave / Opera / Vivaldi**
 1. Open `chrome://extensions` (Edge: `edge://extensions`), enable *Developer mode*.
 2. *Load unpacked* → pick `dist/chromium`.
 
-**Firefox (128+)**
-1. Open `about:debugging#/runtime/this-firefox` → *Load Temporary Add-on…* → pick
-   `dist/firefox/manifest.json`. (For a permanent install use the zip with Firefox
-   Developer Edition / Nightly and `xpinstall.signatures.required=false`, or submit it to AMO.)
+**Firefox (140+, Android 142+)**
+1. Install from the [Firefox Add-ons listing](https://addons.mozilla.org/firefox/addon/phplens/).
+   (Developers: `about:debugging#/runtime/this-firefox` → *Load Temporary Add-on…* →
+   `dist/firefox/manifest.json`.)
 2. Firefox treats host permissions as optional in Manifest V3: open *Add-ons Manager →
    PHPLens → Permissions* and allow **Access your data for all websites**, otherwise the
    header observer never fires.

@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- Published on Firefox Add-ons (approved 2026-10-29): https://addons.mozilla.org/firefox/addon/phplens/
 - All UI (popup, settings, in-page dialog) builds dynamic content with DOM APIs; no untrusted strings reach innerHTML. Firefox add-on linter: 0 warnings.
 - Firefox minimum version 140 (desktop) / 142 (Android); Firefox for Android listed.
 - AMO submission metadata (`store/amo-metadata.json`) and `npm run sign:firefox`.
