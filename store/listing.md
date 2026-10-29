@@ -53,7 +53,7 @@ Open source under the MIT licence.
 | Store | Status | Listing |
 |---|---|---|
 | Firefox Add-ons (AMO) | **Public** – 1.1.0 approved 2026-10-29 (desktop + Android) | https://addons.mozilla.org/firefox/addon/phplens/ · manage: https://addons.mozilla.org/developers/addon/phplens/edit |
-| Chrome Web Store | 1.1.0 submitted 2026-10-29, in review | (ID and URL to add once known) |
+| Chrome Web Store | 1.1.0 submitted 2026-10-29, in review | https://chromewebstore.google.com/detail/cofggkmjamhnfgehicdcjdiolfmcigoh (ID cofggkmjamhnfgehicdcjdiolfmcigoh) |
 | Microsoft Edge Add-ons | not yet submitted | – |
 | Opera Add-ons | not yet submitted | – |
 | Safari App Store | not yet submitted | – |

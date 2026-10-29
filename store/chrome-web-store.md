@@ -58,4 +58,5 @@ Leave "Publish automatically after review" on. Review for an extension with `<al
 answer with the host-permission justification above. The extension ID shown after upload is
 permanent; note it in this file.
 
-Extension ID: _(fill in after upload)_
+Extension ID: cofggkmjamhnfgehicdcjdiolfmcigoh
+Store URL: https://chromewebstore.google.com/detail/cofggkmjamhnfgehicdcjdiolfmcigoh

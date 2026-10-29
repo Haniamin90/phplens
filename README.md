@@ -73,7 +73,8 @@ tests; `npm run icons` regenerates the PNG icons from `tools/gen-icons.mjs`.)
 | Browser | Where |
 |---|---|
 | Firefox (desktop and Android) | **[Install from addons.mozilla.org](https://addons.mozilla.org/firefox/addon/phplens/)** |
-| Chrome, Edge, Brave, Opera | store submissions pending – until then, download `phplens-chromium-*.zip` from the [Releases page](https://github.com/Haniamin90/phplens/releases), unzip it, and load it as described below |
+| Chrome, Brave, Opera, Vivaldi | [Chrome Web Store listing](https://chromewebstore.google.com/detail/cofggkmjamhnfgehicdcjdiolfmcigoh) – submitted, in review |
+| Edge | store submission pending – until then, download `phplens-chromium-*.zip` from the [Releases page](https://github.com/Haniamin90/phplens/releases), unzip it, and load it as described below |
 
 [![Firefox Add-on](https://img.shields.io/amo/v/phplens?label=Firefox%20Add-on&logo=firefox)](https://addons.mozilla.org/firefox/addon/phplens/)
 
